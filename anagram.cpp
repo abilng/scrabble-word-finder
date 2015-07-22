@@ -82,7 +82,7 @@ void insertInMap(string key, string value) {
 	
   if( primeAnagram.count(key) ) {
     it = primeAnagram.find( key );
-    it -> second = it->second + " " + value;
+    it -> second = it->second + SPACE_DELIMITER + value;
   }
   else {
     primeAnagram.insert ( std::pair<string, string>(key, value) );
@@ -93,7 +93,7 @@ void writeMapToFile(map<string, string> primeAnagram) {
   ofstream outFile ("Anagram_Pairs.txt");
   if (outFile.is_open()){
     for (it=primeAnagram.begin(); it!=primeAnagram.end(); ++it) {
-    	if((it->second).find_first_of(" ") < (it->second).length()) {
+    	if((it->second).find_first_of(SPACE_DELIMITER) < (it->second).length()) {
     		outFile << it->second << '\n';
 		}
     }
