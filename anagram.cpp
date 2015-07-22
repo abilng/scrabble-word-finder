@@ -11,7 +11,7 @@ void getPrimes(int *primes, int n);
 unsigned long long int getHash(string str, int primes[]);
 string convertLongToString(unsigned long long int);
 void insertInMap(string key, string value);
-void displayMap(std::map<string, string> primeAnagram); 
+void writeMapToFile(std::map<string, string> primeAnagram); 
 
 map<string, string> primeAnagram;	//need to make it local and send by reference
 
@@ -22,7 +22,7 @@ int main () {
 	int primes[26];
 	getPrimes(primes,26);
 
-	ifstream inputFile ("words.txt");
+	ifstream inputFile ("sowpods.txt");
 	if (inputFile.is_open()){
 		while ( getline (inputFile,word) ){
 			string hash = convertLongToString(getHash(word,primes));
@@ -37,7 +37,7 @@ int main () {
 	} 
 	
 	
-	displayMap(primeAnagram);
+	writeMapToFile(primeAnagram);
 	return 0;
 }
 
@@ -89,11 +89,12 @@ void insertInMap(string key, string value) {
 void writeMapToFile(map<string, string> primeAnagram) {
 	map<string, string>::iterator it = primeAnagram.begin();
 	ofstream outFile ("Anagram_Pairs.txt");
-	if (myfile.is_open()){
+	if (outFile.is_open()){
 	    for (it=primeAnagram.begin(); it!=primeAnagram.end(); ++it) {
 	  			outFile << it->second << '\n';
 		}
-	    myfile.close();
+	    outFile.close();
+	    cout<<"Written to file";
   	}
   else{
   	cout << "Unable to open file";
