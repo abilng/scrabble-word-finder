@@ -92,8 +92,8 @@ void writeMapToFile(map<string, string> primeAnagram) {
   if (outFile.is_open()){
     for ( map<string, string>::iterator it = primeAnagram.begin(); it != primeAnagram.end(); ++it) {
     	if((it->second).find_first_of(SPACE_DELIMITER) < (it->second).length()) {
-    		outFile << it->second << '\n';
-		}
+    	    outFile << it->second << '\n';
+	}
     }
     outFile.close();
     cout << "Written to file" <<endl;
