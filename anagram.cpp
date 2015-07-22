@@ -1,10 +1,11 @@
-#include<iostream>
-#include<stdio.h>
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<map>
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <map>
 
+#define SPACE_DELIMITER " "
 #define NCHAR 26
 
 
@@ -90,7 +91,9 @@ void writeMapToFile(map<string, string> primeAnagram) {
   ofstream outFile ("Anagram_Pairs.txt");
   if (outFile.is_open()){
     for ( map<string, string>::iterator it = primeAnagram.begin(); it != primeAnagram.end(); ++it) {
-      outFile << it->second << '\n';
+      if((it->second).find_first_of(" ") < (it->second).length()) {
+	outFile << it->second << '\n';
+      }
     }
     outFile.close();
     cout << "Written to file" <<endl;
