@@ -1,11 +1,11 @@
 using namespace std;
 
-#include<iostream>
-#include<stdio.h>
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<map>
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <map>
 
 void getPrimes(int *primes, int n);
 unsigned long long int getHash(string str, int primes[]);
@@ -91,7 +91,9 @@ void writeMapToFile(map<string, string> primeAnagram) {
   ofstream outFile ("Anagram_Pairs.txt");
   if (outFile.is_open()){
     for (it=primeAnagram.begin(); it!=primeAnagram.end(); ++it) {
-      outFile << it->second << '\n';
+    	if((it->second).find_first_of(" ") < (it->second).length()) {
+    		outFile << it->second << '\n';
+		}
     }
     outFile.close();
     cout<<"Written to file";
