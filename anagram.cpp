@@ -7,6 +7,8 @@ using namespace std;
 #include <sstream>
 #include <map>
 
+#define SPACE_DELIMITER " "
+
 void getPrimes(int *primes, int n);
 unsigned long long int getHash(string str, int primes[]);
 string convertLongToString(unsigned long long int);
