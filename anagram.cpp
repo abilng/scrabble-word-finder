@@ -1,5 +1,3 @@
-using namespace std;
-
 #include<iostream>
 #include<stdio.h>
 #include<fstream>
@@ -7,35 +5,36 @@ using namespace std;
 #include<sstream>
 #include<map>
 
+using namespace std;
+
 void getPrimes(int *primes, int n);
 unsigned long long int getHash(string str, int primes[]);
 string convertLongToString(unsigned long long int);
-void insertInMap(string key, string value);
+void insertInMap(string key, string value, map<string, string> & primeAnagram);
 void writeMapToFile(std::map<string, string> primeAnagram); 
-
-map<string, string> primeAnagram; 
 
 
 
 int main () {
   string word;
   int primes[26];
+  map<string, string> primeAnagram;
+  
   getPrimes(primes,26);
 
   ifstream inputFile ("sowpods.txt");
   if (inputFile.is_open()){
     while ( getline (inputFile,word) ){
       string hash = convertLongToString(getHash(word,primes));
-      insertInMap(hash, word);
+      insertInMap(hash, word, primeAnagram);
       //cout << hash<<endl;
       //getchar();
     }
     inputFile.close();
   }
   else {
-    cout << "Unable to open file";
+    cerr << "Unable to open file" <<endl;
   } 
-	
 	
   writeMapToFile(primeAnagram);
   return 0;
@@ -75,7 +74,7 @@ string convertLongToString(unsigned long long int hash){
   return hashString;
 }
 
-void insertInMap(string key, string value) {
+void insertInMap(string key, string value, map<string, string> & primeAnagram) {
   map<string, string>::iterator it = primeAnagram.begin();
 	
   if( primeAnagram.count(key) ) {
@@ -87,17 +86,16 @@ void insertInMap(string key, string value) {
   }
 }
 void writeMapToFile(map<string, string> primeAnagram) {
-  map<string, string>::iterator it = primeAnagram.begin();
   ofstream outFile ("Anagram_Pairs.txt");
   if (outFile.is_open()){
-    for (it=primeAnagram.begin(); it!=primeAnagram.end(); ++it) {
+    for ( map<string, string>::iterator it = primeAnagram.begin(); it != primeAnagram.end(); ++it) {
       outFile << it->second << '\n';
     }
     outFile.close();
-    cout<<"Written to file";
+    cout << "Written to file" <<endl;
   }
   else{
-    cout << "Unable to open file";
+    cerr << "Unable to open file"<<endl;
   } 	
 }
 
