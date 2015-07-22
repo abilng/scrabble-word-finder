@@ -5,6 +5,9 @@
 #include<sstream>
 #include<map>
 
+#define NCHAR 26
+
+
 using namespace std;
 
 void getPrimes(int *primes, int n);
@@ -17,18 +20,16 @@ void writeMapToFile(std::map<string, string> primeAnagram);
 
 int main () {
   string word;
-  int primes[26];
+  int primes[NCHAR];
   map<string, string> primeAnagram;
   
-  getPrimes(primes,26);
+  getPrimes(primes,NCHAR);
 
   ifstream inputFile ("sowpods.txt");
   if (inputFile.is_open()){
     while ( getline (inputFile,word) ){
       string hash = convertLongToString(getHash(word,primes));
       insertInMap(hash, word, primeAnagram);
-      //cout << hash<<endl;
-      //getchar();
     }
     inputFile.close();
   }
