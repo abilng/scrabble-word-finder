@@ -14,7 +14,7 @@
 using namespace std;
 
 const int NCHAR = 26;
-//
+
 class ScrabbleDict {
 	int primes[NCHAR];
 	int alphaWeight[NCHAR];
@@ -26,7 +26,7 @@ class ScrabbleDict {
 	void initPrimes();
 
 	struct {
-		string word;
+		string words;
 		int score;
 	} maxScoreWord;
 

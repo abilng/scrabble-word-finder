@@ -64,10 +64,10 @@ void ScrabbleDict::loadDict(string inFile) {
 
 
 void ScrabbleDict::insertInMap(unsigned long long key, string value) {
-	map<unsigned long long, string>::iterator it = primeAnagram.begin();
-
-	if (primeAnagram.count(key)) {
-		it = primeAnagram.find(key);
+	map<unsigned long long, string>::iterator it;
+	it = primeAnagram.find(key);
+	bool hasKey = (it != primeAnagram.end());
+	if (hasKey) {
 		it->second = it->second + SPACE_DELIMITER + value;
 	} else {
 		primeAnagram.insert(std::pair<unsigned long long, string>(key, value));
@@ -95,9 +95,9 @@ void ScrabbleDict::initWeigthArray() {
 
 string ScrabbleDict::getMaxScoreWord(string charsInHand){
 	maxScoreWord.score = 0;
-	maxScoreWord.word = "";
+	maxScoreWord.words = "";
 
 	//TODO
 	//Call recursive function
-	return maxScoreWord.word;
+	return maxScoreWord.words;
 }
