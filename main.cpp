@@ -14,10 +14,11 @@ void fillWeigthArray(int alphaWeight[]);
 int score(string str, const int alphaWeight[]);
 void getPrimes(int *primes, int n);
 unsigned long long int getHash(string str, int primes[]);
-string convertLongToString(unsigned long long int);
-void insertInMap(string key, string value, map<string, string> & primeAnagram);
-void writeMapToFile(std::map<string, string> primeAnagram);
-void loadDict(string inFile, map<string, string> &primeAnagram, int primes[]);
+void insertInMap(unsigned long long key, string value, map<unsigned long long, string> & primeAnagram);
+void loadDict(string inFile, map<unsigned long long, string> &primeAnagram, int primes[]);
+string getMaxScoreWord(string charsInHand, int wiegthArray[], map<unsigned long long, string> primeAnagram);
+
+//void writeMapToFile(map<unsigned long long, string> primeAnagram) ;
 
 int main(int argc, char **argv) {
 	/*
@@ -27,22 +28,39 @@ int main(int argc, char **argv) {
 	 }
 	 */
 	string inputFile = "sowpods.txt";
-
-	string charsInHand = ""; //argv[2];
+	string charsInHand = "ABCD"; //argv[2];
 	int primes[NCHAR];
-	map<string, string> primeAnagram;
+	map<unsigned long long, string> primeAnagram;
+
 	getPrimes(primes, NCHAR);
 	loadDict(inputFile, primeAnagram, primes);
-	writeMapToFile(primeAnagram);
+
+	int wiegthArray[NCHAR]  = {};
+	string validWord = getMaxScoreWord(charsInHand, wiegthArray, primeAnagram);
+
+	cout << validWord <<endl;
+	//writeMapToFile(primeAnagram);
+
 	return 0;
 }
 
-void loadDict(string inFile, map<string, string> &primeAnagram, int primes[]) {
+
+
+string getMaxScoreWord(string charsInHand, int wiegthArray[], map<unsigned long long, string> primeAnagram){
+	int maxScore = 0;
+	string maxScoreWord;
+
+	//TODO
+	//Call recurive function
+	return maxScoreWord;
+}
+
+void loadDict(string inFile, map<unsigned long long, string> &primeAnagram, int primes[]) {
 	string word;
 	ifstream inputFile(inFile.c_str());
 	if (inputFile.is_open()) {
 		while (getline(inputFile, word)) {
-			string hash = convertLongToString(getHash(word, primes));
+			unsigned long long hash = getHash(word, primes);
 			insertInMap(hash, word, primeAnagram);
 		}
 		inputFile.close();
@@ -53,8 +71,8 @@ void loadDict(string inFile, map<string, string> &primeAnagram, int primes[]) {
 
 unsigned long long int getHash(string str, int primes[]) {
 	unsigned long long int hash = 1;
-	for (int i = 0; i < str.length(); i++) {
-		hash *= primes[str[i] - 'a'];
+	for (char c: str) {
+		hash *= primes[c - 'a'];
 	}
 
 	return hash;
@@ -77,40 +95,19 @@ void getPrimes(int *primes, int n) {
 	}
 }
 
-string convertLongToString(unsigned long long int hash) {
-	string hashString;
-	stringstream strStream;
-	strStream << hash;
-	strStream >> hashString;
-	return hashString;
-}
 
-void insertInMap(string key, string value, map<string, string> & primeAnagram) {
-	map<string, string>::iterator it = primeAnagram.begin();
+
+void insertInMap(unsigned long long key, string value, map<unsigned long long, string> & primeAnagram) {
+	map<unsigned long long, string>::iterator it = primeAnagram.begin();
 
 	if (primeAnagram.count(key)) {
 		it = primeAnagram.find(key);
 		it->second = it->second + SPACE_DELIMITER + value;
 	} else {
-		primeAnagram.insert(std::pair<string, string>(key, value));
+		primeAnagram.insert(std::pair<unsigned long long, string>(key, value));
 	}
 }
-void writeMapToFile(map<string, string> primeAnagram) {
-	ofstream outFile("Anagram_Pairs.txt");
-	if (outFile.is_open()) {
-		for (map<string, string>::iterator it = primeAnagram.begin();
-				it != primeAnagram.end(); ++it) {
-			if ((it->second).find_first_of(SPACE_DELIMITER)
-					< (it->second).length()) {
-				outFile << it->second << '\n';
-			}
-		}
-		outFile.close();
-		cout << "Written to file" << endl;
-	} else {
-		cerr << "Unable to open file" << endl;
-	}
-}
+
 
 int score(string str, const int alphaWeight[]) {
 	int wordScore = 0;
@@ -129,3 +126,23 @@ void fillWeigthArray(int alphaWeight[]) {
 	}
 }
 
+/*
+
+void writeMapToFile(map<unsigned long long, string> primeAnagram) {
+	ofstream outFile("Anagram_Pairs.txt");
+	if (outFile.is_open()) {
+		for (map<unsigned long long, string>::iterator it = primeAnagram.begin();
+				it != primeAnagram.end(); ++it) {
+			if ((it->second).find_first_of(SPACE_DELIMITER)
+					< (it->second).length()) {
+				outFile << it->second << '\n';
+			}
+		}
+		outFile.close();
+		cout << "Written to file" << endl;
+	} else {
+		cerr << "Unable to open file" << endl;
+	}
+}
+
+*/
