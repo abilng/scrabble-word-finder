@@ -10,8 +10,9 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-#define SPACE_DELIMITER " "
-#define BLANK " "
+
+constexpr auto SPACE_DELIMITER = " ";
+constexpr auto BLANK = " ";
 
 ScrabbleDict::ScrabbleDict(string FileName) {
 	initPrimes();

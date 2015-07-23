@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include "ScrabbleDict.h"
-#define MAXLEN 10
 
 
 using namespace std;
