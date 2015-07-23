@@ -8,27 +8,24 @@
 
 #include <iostream>
 #include "ScrabbleDict.h"
-
-
+#define MAXLEN 10
 
 
 using namespace std;
 
 int main(int argc, char **argv) {
-	/*
-	 if(argc < 3) {
-	 cerr << "USAGE " << argv[0] << " DICTFILE CHARINHAND" << endl;
+	 if(argc < 2) {
+	 cerr << "USAGE " << argv[0] << " DICTFILE" << endl;
 	 return -1;
 	 }
-	 */
-	string inputFile = "sowpods.txt";
-	string charsInHand = "qwertyuiopasdfghjkl"; //argv[2];
-
-
+	string inputFile = argv[1];
 	ScrabbleDict scrabbledict(inputFile);
 
+
+	string charsInHand;
+	cout << "Enter your rack: ";
+	std::getline (std::cin,charsInHand);
 	string validWord = scrabbledict.getMaxScoreWord(charsInHand);
 	cout << validWord <<endl;
-
 	return 0;
 }

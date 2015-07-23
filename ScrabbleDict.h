@@ -27,6 +27,8 @@ class ScrabbleDict {
 	void updateMaxScore(string word) ;
 	void processAllSubstrings(string str, bool present[],int index);
 
+	void handleBlank(string word, string addedChars);
+
 	struct {
 		string words;
 		int score;
@@ -36,8 +38,8 @@ class ScrabbleDict {
 public:
 	ScrabbleDict(string FileName);
 	void printDict();
-	unsigned long long int getHash(string str);
 	int calculateScore(string word);
+	unsigned long long int getHash(string str);
 	string getMaxScoreWord(string charsInHand);
 
 };

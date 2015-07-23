@@ -11,7 +11,7 @@
 #include <fstream>
 #include <map>
 #define SPACE_DELIMITER " "
-
+#define BLANK " "
 
 ScrabbleDict::ScrabbleDict(string FileName) {
 	initPrimes();
@@ -22,9 +22,9 @@ ScrabbleDict::ScrabbleDict(string FileName) {
 unsigned long long int ScrabbleDict::getHash(string str) {
 	unsigned long long int hash = 1;
 	for (char c: str) {
-		hash *= primes[toupper(c) - 'A'];
+		if(isalpha(c))
+			hash *= primes[toupper(c) - 'A'];
 	}
-
 	return hash;
 }
 
@@ -114,7 +114,41 @@ void ScrabbleDict::updateMaxScore(string word) {
 			maxScoreWord.score = wordScore;
 			maxScoreWord.words = primeAnagram[hashVal];
 		}
+		return;
 	}
+	if(word.find(BLANK) != string::npos) {
+		//cout<<word<<word.find(BLANK)<<" "<<string::npos<<endl;
+		string addedChars="";
+		handleBlank(word,addedChars);
+	}
+}
+
+void ScrabbleDict::handleBlank(string word, string addedChars) {
+	int pos = word.find(BLANK);
+
+	if (pos == string::npos)
+		return;
+
+	int wordScore;
+	string current = word;
+	word[pos] = '-';
+
+	for(char c ='a'; c <= 'z'; c++) {
+		unsigned long long int hashVal = getHash(word+c);
+		bool codeExists = primeAnagram.find(hashVal) != primeAnagram.end();
+		if (codeExists) {
+			wordScore = calculateScore(word) - calculateScore(addedChars);
+			if (wordScore > maxScoreWord.score) {
+				maxScoreWord.score = wordScore;
+				maxScoreWord.words = primeAnagram[hashVal];
+			}
+		} else {
+			handleBlank(word,addedChars+c);
+
+			//cout<<word<<addedChars+c<<endl;
+		}
+	}
+
 }
 
 void ScrabbleDict::printDict(){
