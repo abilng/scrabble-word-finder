@@ -101,3 +101,46 @@ string ScrabbleDict::getMaxScoreWord(string charsInHand){
 	//Call recursive function
 	return maxScoreWord.words;
 }
+
+int calculateScore(string word) {
+	string::iterator strIterator;
+	int wordScore = 0;
+	int scoreArray = {1, 2, 4, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+	for (unsigned int i = 0; i < str.length(); ++i) {
+		int index = toupper(str[i]) - 'A';
+		wordScore += scoreArray[index];
+	}
+	return wordScore;
+}
+void updateMaxScore(string word) {
+	int hashVal = 0;
+	int wordScore;
+	hashVal = calculateHashValue(prefix);
+	bool codeExists = primeAnagram.find(hashval) != primeAnagram.end();
+	if (codeExists) {
+		wordScore = calculateScore(word);
+		if (wordScore > maxScoreWord.score) {
+			maxScoreWord.score = wordScore;
+			maxScoreWord.words = primeAnagram[hashVal];
+		}
+	}		
+}
+
+int findAllSubstrings(string prefix, string rest)
+{
+	if( rest.length() == 0 )
+	{
+		cout<<prefix<<endl;
+		updateMaxScore(prefix);
+	}
+	else 
+	{
+		char c = rest[0];
+		rest = rest.substr(1);
+		substring( prefix , rest );
+		
+		prefix.push_back(c);
+		substring( prefix , rest );
+	}
+	return count;
+}
