@@ -22,8 +22,10 @@ class ScrabbleDict {
 
 	void insertInMap(unsigned long long key, string value);
 	void loadDict(string inFile);
-	void initWeigthArray();
 	void initPrimes();
+
+	void updateMaxScore(string word) ;
+	void processAllSubstrings(string str, bool present[],int index);
 
 	struct {
 		string words;
@@ -33,8 +35,9 @@ class ScrabbleDict {
 
 public:
 	ScrabbleDict(string FileName);
+	void printDict();
 	unsigned long long int getHash(string str);
-	int score(string str);
+	int calculateScore(string word);
 	string getMaxScoreWord(string charsInHand);
 
 };

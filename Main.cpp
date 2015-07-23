@@ -22,9 +22,11 @@ int main(int argc, char **argv) {
 	 }
 	 */
 	string inputFile = "sowpods.txt";
-	string charsInHand = "ABCD"; //argv[2];
+	string charsInHand = "qwertyuiopasdfghjkl"; //argv[2];
+
 
 	ScrabbleDict scrabbledict(inputFile);
+
 	string validWord = scrabbledict.getMaxScoreWord(charsInHand);
 	cout << validWord <<endl;
 

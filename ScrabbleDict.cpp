@@ -15,7 +15,6 @@
 
 ScrabbleDict::ScrabbleDict(string FileName) {
 	initPrimes();
-	initWeigthArray();
 	loadDict(FileName);
 
 }
@@ -23,7 +22,7 @@ ScrabbleDict::ScrabbleDict(string FileName) {
 unsigned long long int ScrabbleDict::getHash(string str) {
 	unsigned long long int hash = 1;
 	for (char c: str) {
-		hash *= primes[c - 'a'];
+		hash *= primes[toupper(c) - 'A'];
 	}
 
 	return hash;
@@ -75,72 +74,71 @@ void ScrabbleDict::insertInMap(unsigned long long key, string value) {
 }
 
 
-int ScrabbleDict::score(string str) {
+int ScrabbleDict::calculateScore(string word) {
 	int wordScore = 0;
-
-	for (unsigned int i = 0; i < str.length(); ++i) {
-		int index = toupper(str[i]) - 'A';
-		wordScore += alphaWeight[index];
-	}
-
-	return wordScore;
-}
-
-void ScrabbleDict::initWeigthArray() {
-	for (int i = 0; i < NCHAR; ++i) {
-		alphaWeight[i] = i + 1;
-	}
-}
-
-
-string ScrabbleDict::getMaxScoreWord(string charsInHand){
-	maxScoreWord.score = 0;
-	maxScoreWord.words = "";
-
-	//TODO
-	//Call recursive function
-	return maxScoreWord.words;
-}
-
-int calculateScore(string word) {
-	string::iterator strIterator;
-	int wordScore = 0;
-	int scoreArray = {1, 2, 4, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
-	for (unsigned int i = 0; i < str.length(); ++i) {
-		int index = toupper(str[i]) - 'A';
+	int scoreArray[] = {1, 2, 4, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+	for (char c: word) {
+		int index = toupper(c) - 'A';
 		wordScore += scoreArray[index];
 	}
 	return wordScore;
 }
-void updateMaxScore(string word) {
-	int hashVal = 0;
+
+
+string ScrabbleDict::getMaxScoreWord(string charsInHand){
+	int length = charsInHand.length();
+
+	maxScoreWord.score = 0;
+	maxScoreWord.words = "";
+	bool present[length];
+
+	processAllSubstrings(charsInHand,present,0);
+
+	int index = maxScoreWord.words.find(SPACE_DELIMITER);
+
+	if ( index == string::npos) {
+		return maxScoreWord.words;
+	} else {
+		return maxScoreWord.words.substr(0,index);
+	}
+}
+
+void ScrabbleDict::updateMaxScore(string word) {
+	unsigned long long int hashVal = 0;
 	int wordScore;
-	hashVal = calculateHashValue(prefix);
-	bool codeExists = primeAnagram.find(hashval) != primeAnagram.end();
+	hashVal = getHash(word);
+	bool codeExists = primeAnagram.find(hashVal) != primeAnagram.end();
 	if (codeExists) {
 		wordScore = calculateScore(word);
 		if (wordScore > maxScoreWord.score) {
 			maxScoreWord.score = wordScore;
 			maxScoreWord.words = primeAnagram[hashVal];
 		}
-	}		
+	}
 }
 
-int findAllSubstrings(string prefix, string rest)
-{
-	if( rest.length() == 0 )
-	{
-		cout<<prefix<<endl;
-		updateMaxScore(prefix);
+void ScrabbleDict::printDict(){
+	ofstream outFile("out.txt");
+	for (map<unsigned long long, string>::iterator ii = primeAnagram.begin(); ii != primeAnagram.end(); ++ii) {
+	    string s=(*ii).second;
+		outFile << s << endl;
 	}
-	else 
-	{
-		char c = rest[0];
-		rest = rest.substr(1);
-		substring( prefix , rest );
+	outFile.close();
+}
+
+void ScrabbleDict::processAllSubstrings(string str, bool present[],int index) {
+	int length = str.length();
+	if( index == length) {
+		string word ="";
+		for(int i = 0; i < length; i++ ) {
+			if(present[i]) word += str[i];
+		}
+		updateMaxScore(word);
+	} else {
+		present[index] = true;
+		processAllSubstrings(str,present,index+1);
 		
-		prefix.push_back(c);
-		substring( prefix , rest );
+		present[index] = false;
+		processAllSubstrings(str,present,index+1);
 	}
-	return count;
 }
