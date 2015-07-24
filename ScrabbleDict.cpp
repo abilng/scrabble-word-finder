@@ -11,6 +11,8 @@
 #include <fstream>
 #include <map>
 
+using namespace std;
+
 constexpr auto SPACE_DELIMITER = " ";
 constexpr auto BLANK = " ";
 
