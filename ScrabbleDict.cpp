@@ -22,15 +22,19 @@ ScrabbleDict::ScrabbleDict(string FileName) {
 
 }
 
-unsigned long long int ScrabbleDict::getHash(string str) {
-	unsigned long long int hash = 1;
-	for (char c: str) {
-		if(isalpha(c))
-			hash *= primes[toupper(c) - 'A'];
+void ScrabbleDict::loadDict(string inFile) {
+	string word;
+	ifstream inputFile(inFile.c_str());
+	if (inputFile.is_open()) {
+		while (getline(inputFile, word)) {
+			unsigned long long hash = getHash(word);
+			insertInMap(hash, word);
+		}
+		inputFile.close();
+	} else {
+		cerr << "Unable to open file" << endl;
 	}
-	return hash;
 }
-
 
 void ScrabbleDict::initPrimes(){
 	int count = 1;
@@ -49,19 +53,15 @@ void ScrabbleDict::initPrimes(){
 	}
 }
 
-void ScrabbleDict::loadDict(string inFile) {
-	string word;
-	ifstream inputFile(inFile.c_str());
-	if (inputFile.is_open()) {
-		while (getline(inputFile, word)) {
-			unsigned long long hash = getHash(word);
-			insertInMap(hash, word);
-		}
-		inputFile.close();
-	} else {
-		cerr << "Unable to open file" << endl;
+unsigned long long int ScrabbleDict::getHash(string str) {
+	unsigned long long int hash = 1;
+	for (char c: str) {
+		if(isalpha(c))
+			hash *= primes[toupper(c) - 'A'];
 	}
+	return hash;
 }
+
 
 
 
